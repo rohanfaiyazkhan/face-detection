@@ -11,20 +11,21 @@ def verify_image(filename):
   
 
 input = './drag3/0.jpg'
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_alt2.xml')
 
 padding = 25
 
-def detect_faces(filename):
+def detect_faces(filename, haarfile='haarcascade_frontalface_alt2.xml', scaleFactor=1.25, minNeighbors=3, minSize=(40,40)):
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + haarfile)
+    
     img = cv2.imread(filename)
     # Make a copy of the original crop with
     image_copy = np.copy(filename)
 
     # Convert the image to gray 
-    gray_image = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # return array of x,y,w,h
-    return face_cascade.detectMultiScale(gray_image, 1.05, 6, minSize=[80,80], flags=cv2.CASCADE_SCALE_IMAGE)
+    return face_cascade.detectMultiScale(gray_image, scaleFactor, minNeighbors, minSize)
 
 def crop_faces(original, faces):
     crops = []
